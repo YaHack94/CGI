@@ -9,7 +9,7 @@
       <% connection.internal_encoding = "UTF-8" %>
       <h3>Les informations de Goya.</h3>
 
-    <% goyas_result = connection.exec("select * from crops where give_for != 'Autoconsommation';") %>
+    <% goyas_result = connection.exec("select * from crops WHERE give_for != 'Autoconsommation' and give_for !='Consommation à domicile' and give_for !='Consommation propre';") %>
     <% goyas = [] %>
     <% goyas_result.each do |goya| %>
       <% goyas << " length: #{goya["length"]}, weight: #{goya["weight"]}, quality: #{goya["quality"]}, give_for: #{goya["give_for"]}, date: #{goya["date"]}" %>
@@ -19,10 +19,10 @@
       <input type="text"  name="all-goya" value="<%= goyas.join('\n')%>"><br>
       <input type="submit" name="Soumettre" >
     </form>
-    <% result = connection.exec("select weight, give_for from crops;") %>
+    <% result = connection.exec("select * from crops WHERE quality = 'f';") %>
     <% data = [] %>
     <% result.each do |record| %>
-      <%  data << "La taille de la courge amère：#{record["weight"]}　Qui a vendu：#{record["give_for"]}" %>
+      <%  data << "length: #{record["length"]}, weight: #{record["weight"]}, quality: #{record["quality"]}, give_for: #{record["give_for"]}, date: #{record["date"]}" %>
     <% end %>
 
     <h3>Les goyas de mauvaise qualités.</h3>
